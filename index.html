@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hiring Filter - Professional Recruitment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element element-1"></div>
+    <div class="bg-element element-2"></div>
+    <div class="bg-element element-3"></div>
+
+    <!-- RECRUITER LOGIN MODAL (Hidden by default) -->
+    <div class="recruiter-login-modal" id="recruiterLoginModal">
+        <div class="login-modal-backdrop"></div>
+        <div class="login-modal-content">
+            <button class="modal-close-btn" id="closeLoginBtn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="login-modal-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Recruiter Access</h2>
+                <p>Secure Login for Hiring Team</p>
+            </div>
+
+            <form class="login-modal-form" id="recruiterLoginForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="recruiterUsername" 
+                        class="form-input"
+                        placeholder="Enter your username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input 
+                        type="password" 
+                        id="recruiterPassword" 
+                        class="form-input"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-modal-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+
+                <div class="login-modal-status" id="loginModalStatus"></div>
+            </form>
+
+            <div class="login-modal-info">
+                <p><i class="fas fa-lock-open"></i> <strong>Demo Credentials:</strong></p>
+                <p>Username: <code>recruiter</code> | Password: <code>hiring123</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE EDITING MODAL -->
+    <div class="profile-edit-modal" id="profileEditModal">
+        <div class="profile-modal-backdrop"></div>
+        <div class="profile-modal-content">
+            <button class="modal-close-btn" id="closeProfileEditBtn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="profile-modal-header">
+                <i class="fas fa-user-edit"></i>
+                <h2>Edit Recruiter Profile</h2>
+                <p>Update your profile information</p>
+            </div>
+
+            <form class="profile-edit-form" id="profileEditForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i> Full Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="editRecruiterName" 
+                        class="form-input"
+                        placeholder="Your name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-briefcase"></i> Job Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="editRecruiterRole" 
+                        class="form-input"
+                        placeholder="e.g., Recruitment Manager"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-building"></i> Company Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="editRecruiterCompany" 
+                        class="form-input"
+                        placeholder="Your company"
+                        required
+                    >
+                </div>
+
+                <div class="profile-modal-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelProfileEditBtn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+
+                <div class="profile-edit-status" id="profileEditStatus"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RECRUITER DASHBOARD VIEW -->
+    <div class="view hidden" id="dashboard-view">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-briefcase"></i> Recruiter Dashboard
+                </h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info" id="userInfo"></span>
+                <button class="btn btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <!-- Left Panel: Job Setup -->
+            <aside class="dashboard-panel setup-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-cogs"></i> Job Setup
+                </h2>
+
+                <!-- Job Details -->
+                <div class="section">
+                    <h3 class="section-title">Job Details</h3>
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" id="jobTitle" class="form-input" placeholder="e.g., Senior Developer">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Required Skills</label>
+                        <textarea id="requiredSkills" class="form-textarea" placeholder="JavaScript, React, Node.js..." rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Minimum Experience (years)</label>
+                        <input type="number" id="minExperience" class="form-input" min="0" max="50" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Job Description Keywords</label>
+                        <textarea id="jobKeywords" class="form-textarea" placeholder="Describe the role, company culture, benefits..." rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- Generated Description -->
+                <div class="section">
+                    <h3 class="section-title">Generated Description</h3>
+                    <div class="generated-description" id="generatedDescription">
+                        <p style="color: var(--text-tertiary); font-style: italic;">Job description will appear here after you save.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" id="generateDescBtn">
+                        <i class="fas fa-wand-magic-sparkles"></i> Generate Description
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Middle Panel: Questions -->
+            <main class="dashboard-panel questions-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-question-circle"></i> Custom Questions
+                </h2>
+
+                <div class="questions-list" id="questionsList">
+                    <p class="empty-state">No questions added yet. Add your first question below.</p>
+                </div>
+
+                <!-- Add Questions Section -->
+                <div class="add-questions-section">
+                    <h3 class="section-title">Add New Question</h3>
+
+                    <!-- Text Question -->
+                    <div class="question-type-form">
+                        <label class="form-label">Text Question</label>
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.75rem;">
+                            <input type="text" id="textQuestion" class="form-input" placeholder="What is your question?">
+                            <button type="button" class="btn btn-secondary btn-sm" id="addTextQBtn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MCQ Question -->
+                    <div class="question-type-form" style="margin-top: 1rem;">
+                        <label class="form-label">Multiple Choice Question</label>
+                        <input type="text" id="mcqQuestion" class="form-input" placeholder="What is your MCQ question?">
+                        <div id="mcqOptions" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <input type="text" class="form-input mcq-option" placeholder="Option 1">
+                            <input type="text" class="form-input mcq-option" placeholder="Option 2">
+                            <input type="text" class="form-input mcq-option" placeholder="Option 3">
+                            <input type="text" class="form-input mcq-option" placeholder="Option 4">
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="addMCQBtn" style="margin-top: 0.75rem;">
+                            <i class="fas fa-plus"></i> Add MCQ
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Panel: Deadline & Profile -->
+            <aside class="dashboard-right-panel">
+                <!-- Application Settings -->
+                <div class="dashboard-panel actions-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-clock"></i> Application Settings
+                    </h2>
+
+                    <!-- Deadline -->
+                    <div class="section">
+                        <h3 class="section-title">Application Deadline</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div class="form-group">
+                                <label class="form-label">Days</label>
+                                <input type="number" id="deadlineDays" class="form-input" min="0" max="365" value="7">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hours</label>
+                                <input type="number" id="deadlineHours" class="form-input" min="0" max="23" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="section">
+                        <h3 class="section-title">Actions</h3>
+                        <button class="btn btn-primary btn-full" id="publishJobBtn">
+                            <i class="fas fa-rocket"></i> Publish Job
+                        </button>
+                        <button class="btn btn-danger btn-full" id="closeApplicationsBtn" style="margin-top: 0.75rem;">
+                            <i class="fas fa-stop"></i> Close Applications
+                        </button>
+                        <button class="btn btn-warning btn-full" id="clearJobsBtn" style="margin-top: 0.75rem;">
+                            <i class="fas fa-trash"></i> Clear/Remove Jobs
+                        </button>
+                    </div>
+
+                    <!-- Status Messages -->
+                    <div class="status-message" id="dashboardStatus"></div>
+                </div>
+
+                <!-- Recruiter Profile Card -->
+                <div class="recruiter-profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-wrapper">
+                            <div class="profile-avatar" id="recruiterAvatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="avatar-glow"></div>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <h3 class="profile-title" id="recruiterName">Hiring Team</h3>
+                        <p class="profile-role" id="recruiterRole">Recruitment Manager</p>
+                        <p class="profile-company" id="recruiterCompany">Your Company</p>
+                    </div>
+
+                    <div class="profile-stats-recruiter">
+                        <div class="stat">
+                            <div class="stat-value" id="activeJobsCount">0</div>
+                            <div class="stat-label">Active Jobs</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="applicantsCount">0</div>
+                            <div class="stat-label">Applicants</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-action-buttons">
+                        <button class="profile-btn edit-btn" id="editProfileBtn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="profile-btn settings-btn" id="settingsBtn">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- APPLICANT FORM VIEW -->
+    <div class="view" id="applicant-view">
+        <!-- Top Header with Recruiter Login -->
+        <header class="applicant-header">
+            <div class="header-branding">
+                <i class="fas fa-brain"></i>
+                <h1>Smart Hiring Filter</h1>
+            </div>
+            <div class="header-recruiter-btn">
+                <button class="btn-recruiter-login" id="recruiterLoginBtn" title="Recruiter Login">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Recruiter Access</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Countdown Timer -->
+        <div class="timer-section" id="timerSection">
+            <div class="timer-card">
+                <i class="fas fa-hourglass-end"></i>
+                <span>Applications open for</span>
+                <div class="timer-display">
+                    <span id="timerDays">0</span>d
+                    <span id="timerHours">0</span>h
+                    <span id="timerMinutes">0</span>m
+                </div>
+            </div>
+        </div>
+
+        <div class="applicant-layout">
+            <!-- MAIN CONTENT (Center-Left) -->
+            <main class="applicant-main">
+                <!-- Job Description Section -->
+                <section class="job-description-panel">
+                    <h2 class="job-section-heading">
+                        <i class="fas fa-briefcase"></i> Job Description
+                    </h2>
+                    <h3 class="job-title-large" id="jobTitleDisplay"></h3>
+                    <div class="job-description-content" id="jobDescriptionDisplay"></div>
+                    
+                    <!-- Job Meta Information -->
+                    <div class="job-meta-grid" id="jobMeta"></div>
+                </section>
+
+                <!-- Application Form Section -->
+                <section class="application-panel">
+                    <h2 class="form-section-heading">
+                        <i class="fas fa-edit"></i> Your Application
+                    </h2>
+                    
+                    <form class="application-form" id="applicationForm">
+                        <!-- Basic Info Fields -->
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="applicantName" class="form-input" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="applicantEmail" class="form-input" placeholder="your.email@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Skills</label>
+                            <textarea id="applicantSkills" class="form-textarea" placeholder="List your key skills (e.g., JavaScript, React, Node.js...)" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Years of Experience</label>
+                                <input type="number" id="applicantExperience" class="form-input" min="0" max="50" placeholder="e.g., 5" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Portfolio / LinkedIn</label>
+                                <input type="url" id="applicantPortfolio" class="form-input" placeholder="https://..." required>
+                            </div>
+                        </div>
+
+                        <!-- Custom Questions Container -->
+                        <div id="customQuestionsContainer"></div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-submit-large">
+                            <span class="btn-submit-text">
+                                <i class="fas fa-rocket"></i> Submit Application
+                            </span>
+                            <span class="btn-submit-arrow">→</span>
+                        </button>
+
+                        <div class="status-message" id="applicantStatus"></div>
+                    </form>
+                </section>
+            </main>
+
+            <!-- SIDE PROFILE SECTION (Right) -->
+            <aside class="applicant-sidebar">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <!-- Avatar -->
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="avatar-glow"></div>
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div class="profile-info">
+                        <h3 class="profile-name" id="profileName">Your Name</h3>
+                        <p class="profile-email" id="profileEmail">your@email.com</p>
+                    </div>
+
+                    <!-- Profile Stats -->
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-star"></i>
+                            <span id="profileExperience">0 yrs</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <i class="fas fa-code"></i>
+                            <span id="profileSkillsCount">0 Skills</span>
+                        </div>
+                    </div>
+
+                    <!-- Skills Display -->
+                    <div class="profile-section">
+                        <h4 class="profile-section-title">Skills</h4>
+                        <div class="skills-display" id="skillsDisplay">
+                            <p class="placeholder-text">Add skills in the form</p>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Link -->
+                    <div class="profile-section">
+                        <h4 class="profile-section-title">
+                            <i class="fas fa-link"></i> Portfolio
+                        </h4>
+                        <div class="portfolio-link" id="portfolioLink">
+                            <p class="placeholder-text">Add portfolio link</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="profile-actions">
+                        <button type="button" class="action-btn preview-btn" id="previewBtn">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                        <button type="button" class="action-btn clear-btn" id="clearBtn">
+                            <i class="fas fa-refresh"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="help-card">
+                    <div class="help-header">
+                        <i class="fas fa-lightbulb"></i> Tips
+                    </div>
+                    <ul class="help-list">
+                        <li>Be specific about your skills</li>
+                        <li>Share a relevant portfolio link</li>
+                        <li>Answer all custom questions</li>
+                        <li>Double-check for errors</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- SHORTLIST VIEW -->
+    <div class="view hidden" id="shortlist-view">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-star"></i> Shortlisted Candidates
+                </h1>
+                <p class="subtitle">Top <span id="topPercentage">20</span>% qualified applicants</p>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" id="backToDashboardBtn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+        </header>
+
+        <div class="shortlist-container">
+            <div id="candidatesList"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hiring Filter - AI-Powered Recruitment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Password Protection Modal -->
+    <div class="password-modal hidden" id="passwordModal">
+        <div class="password-modal-content">
+            <div class="password-modal-header">
+                <h2>
+                    <i class="fas fa-lock"></i>
+                    Recruiter Panel Access
+                </h2>
+                <p>Enter your password to access the recruiter panel</p>
+            </div>
+
+            <form class="password-form" id="passwordForm">
+                <div class="password-input-group">
+                    <label class="password-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        class="password-input"
+                        placeholder="Enter password"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="password-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-unlock"></i>
+                        Unlock
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelPasswordBtn">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                </div>
+
+                <div class="password-status" id="passwordStatus"></div>
+
+                <div class="password-hint">
+                    <i class="fas fa-info-circle"></i>
+                    <p><strong>Demo Password:</strong> hiring123</p>
+                </div>
+            </form>
+        </div>
+        <div class="password-modal-backdrop"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
