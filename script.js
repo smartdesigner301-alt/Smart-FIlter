@@ -122,6 +122,7 @@ function setupEventListeners() {
     const applicantEmailInput = document.getElementById('applicantEmail');
     const applicantSkillsInput = document.getElementById('applicantSkills');
     const applicantExperienceInput = document.getElementById('applicantExperience');
+    const applicantPhoneInput = document.getElementById('applicantPhone');
     const applicantPortfolioInput = document.getElementById('applicantPortfolio');
 
     if (applicantNameInput) {
@@ -135,6 +136,9 @@ function setupEventListeners() {
     }
     if (applicantExperienceInput) {
         applicantExperienceInput.addEventListener('input', updateProfileCard);
+    }
+    if (applicantPhoneInput) {
+        applicantPhoneInput.addEventListener('input', updateProfileCard);
     }
     if (applicantPortfolioInput) {
         applicantPortfolioInput.addEventListener('input', updateProfileCard);
@@ -809,6 +813,7 @@ function submitApplication(e) {
     const email = document.getElementById('applicantEmail').value;
     const skills = document.getElementById('applicantSkills').value;
     const experience = parseInt(document.getElementById('applicantExperience').value);
+    const phone = document.getElementById('applicantPhone').value;
     const portfolio = document.getElementById('applicantPortfolio').value;
 
     // Collect custom question answers
@@ -837,6 +842,7 @@ function submitApplication(e) {
         email,
         skills,
         experience,
+        phone,
         portfolio,
         answers,
         score,
